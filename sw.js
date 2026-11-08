@@ -1,5 +1,5 @@
 // Offline support: the app shell is cached; index.html is network-first so updates arrive when online.
-const CACHE = "shifts-v3.1";
+const CACHE = "shifts-v3.2";
 const SHELL = ["./", "index.html", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/maskable-512.png"];
 
 self.addEventListener("install", e => {
