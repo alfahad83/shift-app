@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>جدول المناوبات</title>
+<title>جدول الموظفين</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#36444F">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="المناوبات">
+<meta name="apple-mobile-web-app-title" content="جدول الموظفين">
 <meta name="author" content="فهد العنزي">
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
@@ -238,7 +238,7 @@ tr.patrow td{background:var(--soft);padding:12px 10px}
 <script id="app">(function(){
 "use strict";
 /* =====================================================================
-   جدول المناوبات v3
+   جدول الموظفين v3
    ===================================================================== */
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -416,12 +416,12 @@ const nameOf=id=>{const e=S.emps.find(x=>x.id===id);return e?e.name:(S.names[id]
    ===================================================================== */
 const HEAD=`<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>جدول المناوبات</title>
+<title>جدول الموظفين</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Readex+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">`;
 function shell(){
   return `<header class="appbar ui" id="appbar">
   <div class="r1">
-    <div class="brand"><div class="logo">${"<i></i>".repeat(9)}</div><span>المناوبات</span></div>
+    <div class="brand"><div class="logo">${"<i></i>".repeat(9)}</div><span>جدول الموظفين</span></div>
     <nav class="tabs">
       <button class="tab" data-tab="sched">${ic("cal")}<span>الجدول</span></button>
       <button class="tab" data-tab="dash">${ic("chart")}<span>لوحة المؤشرات</span></button>
@@ -522,7 +522,7 @@ function tasksFoot(){ return S.tasks.map(t=>`<b>${esc(t.code)}</b>${t.label&&t.l
 
 function renderGrid(){
   const D=days(), T=periodTitle(), n=D.length, wk=S.view==="week", today=todayISO();
-  let h=`<div class="wrap" id="wrapEl"><div class="card sched ${editing?"edit":""}" id="card">${headerHTML(T,`جدول المناوبات · ${n} ${n>10?"يوماً":"أيام"}`)}
+  let h=`<div class="wrap" id="wrapEl"><div class="card sched ${editing?"edit":""}" id="card">${headerHTML(T,`جدول الموظفين · ${n} ${n>10?"يوماً":"أيام"}`)}
   <table class="grid ${wk?"week":""}"><colgroup><col class="name">${D.map(()=>"<col>").join("")}</colgroup>
   <thead><tr><th></th>${D.map((d,i)=>`<th class="${isWE(d.dow)?"we":""} ${d.iso===today?"today":""}" data-day="${i}"><span class="dnum">${d.d}</span><small>${wk?AR[d.dow]:DN[d.dow]}</small>${S.notes[d.iso]?'<span class="ndot"></span>':""}</th>`).join("")}</tr></thead><tbody>`;
   const cov={M:Array(n).fill(0),E:Array(n).fill(0),N:Array(n).fill(0)}; let unassigned=false;
@@ -1103,7 +1103,7 @@ function buildScheduleXlsx(){
   const push=(r,h)=>{rows.push(r);hts.push(h||null);};
   push([{v:"ATM HELP DESK · SHIFT SCHEDULE",s:"group"}],20);
   push([{v:T.short+(T.range?" "+D[n-1].y:""),s:"title"}],34);
-  push([{v:`جدول المناوبات · ${n} يوم`,s:"sub"}]); push([]);
+  push([{v:`جدول الموظفين · ${n} يوم`,s:"sub"}]); push([]);
   push([{v:"",s:"txt"},...D.map(d=>({v:d.d,s:isWE(d.dow)?"headWE":"head"}))],18);
   push([{v:"",s:"txt"},...D.map(d=>({v:DN[d.dow],s:"small"}))],13);
   const cov={M:Array(n).fill(0),E:Array(n).fill(0),N:Array(n).fill(0)};
@@ -1128,7 +1128,7 @@ $("bakBtn").onclick=()=>{ closeMenus(); saveFile(`schedule_backup_${todayISO()}.
 $("resFile").onchange=async ev=>{ closeMenus(); const f=ev.target.files[0]; if(!f) return;
   try{ const m=migrate(JSON.parse(await f.text())); if(!m) throw 0; S=m; S.notes=S.notes||{}; S.hist=S.hist||{}; S.locked=S.locked||[]; S.names=S.names||{}; document.documentElement.setAttribute("data-theme",S.theme||"calm"); save(); render(); toast("تم الاسترجاع"); }
   catch(e){ toast("الملف غير صالح"); } ev.target.value=""; };
-$("aboutBtn").onclick=()=>{ closeMenus(); modal(`<h3>${ic("cal")}جدول المناوبات · الإصدار 3</h3><p class="note">كل بياناتك محفوظة على هذا الجهاز فقط، ولا تُرسل لأي مكان. خذ نسخة احتياطية من قائمة «المزيد» بعد أي تعديل كبير، واسترجعها لنقل بياناتك لجهاز آخر.</p><p class="note">الأشهر الماضية تُعتمد وتُؤرشف تلقائياً عند بداية الشهر الجديد، فتبقى ثابتة في التقارير.</p><p class="note" style="text-align:center"><b>فكرة وتطوير: فهد العنزي</b><br><bdi dir="ltr">0508652390</bdi><br>© جميع الحقوق محفوظة</p><div class="acts"><button class="ibtn primary" id="abX">حسناً</button></div>`,(m,close)=>{m.querySelector("#abX").onclick=close;}); };
+$("aboutBtn").onclick=()=>{ closeMenus(); modal(`<h3>${ic("cal")}جدول الموظفين · الإصدار 3</h3><p class="note">كل بياناتك محفوظة على هذا الجهاز فقط، ولا تُرسل لأي مكان. خذ نسخة احتياطية من قائمة «المزيد» بعد أي تعديل كبير، واسترجعها لنقل بياناتك لجهاز آخر.</p><p class="note">الأشهر الماضية تُعتمد وتُؤرشف تلقائياً عند بداية الشهر الجديد، فتبقى ثابتة في التقارير.</p><p class="note" style="text-align:center"><b>فكرة وتطوير: فهد العنزي</b><br><bdi dir="ltr">0508652390</bdi><br>© جميع الحقوق محفوظة</p><div class="acts"><button class="ibtn primary" id="abX">حسناً</button></div>`,(m,close)=>{m.querySelector("#abX").onclick=close;}); };
 $("saveBtn").onclick=async()=>{
   if(!art) return; $("saveBtn").disabled=true;
   const json=JSON.stringify(S).replace(/</g,"\\u003c");
@@ -1137,6 +1137,7 @@ $("saveBtn").onclick=async()=>{
   catch(e){ if(e&&(e.code==="not_granted"||e.code==="not_writer")){art=null; toast("ليس لديك صلاحية الحفظ في هذه الصفحة");} else toast("تعذّر الحفظ، حاول مرة أخرى"); status(); }
 };
 window.addEventListener("resize",()=>document.documentElement.style.setProperty("--barH",$("appbar").offsetHeight+"px"));
+const _bv=bindView; bindView=function(){ _bv(); if(tab==="dash") bindDash(); };
 
 /* PWA: offline + install */
 try{ if("serviceWorker" in navigator && location.protocol==="https:") navigator.serviceWorker.register("sw.js").catch(()=>{}); }catch(e){}
